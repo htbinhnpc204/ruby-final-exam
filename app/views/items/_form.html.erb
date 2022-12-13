@@ -1,0 +1,40 @@
+<%= form_with(model: item, class: "w-50 ms-auto me-auto") do |form| %>
+  <% if item.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+      <ul>
+        <% item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <fieldset>
+    <legend>Editing item</legend>
+    <div class="form-group">
+      <label for="exampleInputEmail1" class="form-label mt-4">Item name</label>
+      <%= form.text_field :item_name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1" class="form-label mt-4">Item quantity</label>
+      <%= form.number_field :item_qty, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1" class="form-label mt-4">Item description</label>
+      <%= form.text_field :item_des, class: "form-control" %>
+    </div>
+    <div class="mt-2 float-end">
+      <%= form.submit :class => "btn btn-outline-success" %>
+    </div>
+  </fieldset>
+<% end %>
+
+<form action="<%= item_path(@item) %>" method="post">
+  <input type="hidden" name="_method" value="put"/>
+  <input type="text" name="item[item_name]" value="<%= @item.item_name %>" placeholder="Item name" />
+  <input type="number" name="item[item_qty]" value="<%= @item.item_qty %>" />
+  <input type="text" name="item[item_des]" value="<%= @item.item_des %>" placeholder="Item description" />
+  <button type="submit">
+    Save
+  </button>
+</form>

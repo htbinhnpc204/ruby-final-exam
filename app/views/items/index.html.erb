@@ -1,0 +1,42 @@
+<div id="items">
+  <p class="h1 text-center">Items List</p>
+  <table class="table table-hover">
+    <thead>
+    <tr class="table bg-dark">
+      <th scope="col">#</th>
+      <th scope="col"><%= sortable "item_name" %></th>
+      <th scope="col">Item quantity</th>
+      <th scope="col">Item description</th>
+      <th scope="col" colspan="3" style="width: 15%">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% index = 1 %>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= index %></td>
+        <td><%= item.item_name %></td>
+        <td><%= item.item_qty %></td>
+        <td><%= item.item_des %></td>
+        <td><%= link_to item do %>
+            <i class="fa fa-eye"></i>
+          <% end %>
+        </td>
+        <td><%= link_to edit_item_path(item.id) do %>
+            <i class="fa fa-edit"></i>
+          <% end %>
+        </td>
+        <td><%= link_to item, method: :delete do %>
+            <i class="fa fa-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+      <% index += 1 %>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to new_item_path, class:"btn btn-outline-info" do%>
+  <i class="fa fa-plus"></i> New item
+<% end %>

@@ -1,0 +1,27 @@
+<div class="card border-primary w-50 ms-auto me-auto" id="<%= dom_id item %>">
+  <div class="card-header">
+    <%= link_to items_path do %>
+      <i class="fa fa-arrow-left"></i>
+    <% end %>
+    <%= item.item_name %>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">Item description:</h4>
+    <p class="card-text"><%= item.item_des %></p>
+    <p class="card-text">Quantity: <%= item.item_qty %></p>
+  </div>
+  <div class="card-footer ms-auto">
+    <button class="btn btn-outline-info btn-sm">
+      <%= link_to edit_item_path(@item), :class=>"text-white" do %>
+        <i class="fa fa-edit me-2"></i>Edit this item
+      <% end %>
+    </button>
+    <button class="btn btn-outline-danger btn-sm">
+
+    <%= link_to @item, method: :delete, :class=>"text-white" do%>
+      <i class="fa fa-trash"></i> Destroy this item
+      <%end %>
+    </button>
+
+  </div>
+</div>
