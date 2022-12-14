@@ -8,11 +8,23 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <%= link_to "Item list", items_path, class: "nav-link text-white" %>
-        </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Item list", items_path, class: "nav-link text-white" %>
+          </li>
+        <% end %>
       </ul>
-      <ul class="navbar-nav d-flex flex-row ms-auto me-3">
+      <ul class="navbar-nav d-flex align-items-center flex-row ms-auto me-3">
+        <% if current_page? items_path %>
+          <li class="nav-item me-5">
+            <%= form_with(url: items_path, method: :get) do |form| %>
+              <%= form.text_field :query, placeholder: "Item Search", class: "ps-2 pt-1 pb-1 me-2 rounded" %>
+              <button type="submit" style="background: none; border: none; color: #ffffff ">
+                <i class="fa fa-search"></i>
+              </button>
+            <% end %>
+          </li>
+        <% end %>
         <% if user_signed_in? %>
           <li class="nav-item me-3 me-lg-0">
             <a class="nav-link dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,8 +48,8 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to new_user_session_path, class: "nav-link text-white" do%>
-            <i class="fa fa-sign-in text-white"></i> Sign in
+            <%= link_to new_user_session_path, class: "nav-link text-white" do %>
+              <i class="fa fa-sign-in text-white"></i> Sign in
             <% end %>
           </li>
         <% end %>

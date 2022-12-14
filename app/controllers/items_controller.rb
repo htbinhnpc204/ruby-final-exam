@@ -5,7 +5,11 @@ class ItemsController < ApplicationController
 
   # GET /items or /items.json
   def index
-    @items = Item.order(sort_column + " " + sort_direction)
+    if params[:query]
+      @items = Item.where('item_name LIKE ?', "%#{params[:query]}%")
+    else
+      @items = Item.order(sort_column + " " + sort_direction)
+    end
   end
 
   # GET /items/1 or /items/1.json
@@ -33,8 +37,8 @@ class ItemsController < ApplicationController
           format.json { render :show, status: :created, location: @item }
         end
       else
-        @error = "Null excepted"
-        format.html { render :new, status: :unprocessable_entity }
+        flash[:error] = 'Null excepted'
+        format.html { redirect_to new_item_url}
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end

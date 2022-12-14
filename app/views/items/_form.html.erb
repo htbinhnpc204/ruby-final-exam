@@ -28,13 +28,3 @@
     </div>
   </fieldset>
 <% end %>
-
-<form action="<%= item_path(@item) %>" method="post">
-  <input type="hidden" name="_method" value="put"/>
-  <input type="text" name="item[item_name]" value="<%= @item.item_name %>" placeholder="Item name" />
-  <input type="number" name="item[item_qty]" value="<%= @item.item_qty %>" />
-  <input type="text" name="item[item_des]" value="<%= @item.item_des %>" placeholder="Item description" />
-  <button type="submit">
-    Save
-  </button>
-</form>

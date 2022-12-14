@@ -11,6 +11,7 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'morph', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
@@ -20,12 +21,19 @@
       <% if notice %>
         <%= render 'layouts/shared/notice' %>
       <% end %>
-      <% unless @error.blank? %>
-        <div class="alert alert-dismissible alert-danger w-25 float-end">
+
+      <% if flash[:error] %>
+        <div class="alert alert-dismissible position-absolute alert-danger end-0" id="alert">
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-          <%= @error %>
+          <%= flash[:error] %>
+
         </div>
       <% end %>
+      <script>
+          setTimeout(function () {
+              $('#alert').slideUp(500);
+          }, 1000);
+      </script>
       <%= yield %>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
