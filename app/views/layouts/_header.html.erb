@@ -1,22 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-white bg-dark">
-  <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand" do %>
-      <i class="fab fa-github fa-2x mx-3 ps-1"></i>
-    <% end %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="<%= root_path %>">Trang chủ</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
     </button>
-    <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item">
-            <%= link_to "Item list", items_path, class: "nav-link text-white" %>
-          </li>
-        <% end %>
-      </ul>
-      <ul class="navbar-nav d-flex align-items-center flex-row ms-auto me-3">
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto">
         <% if current_page? items_path %>
-          <li class="nav-item me-5">
+          <li class="nav-item d-flex align-items-center flex-row ms-auto me-3">
             <%= form_with(url: items_path, method: :get) do |form| %>
               <%= form.text_field :query, placeholder: "Item Search", class: "ps-2 pt-1 pb-1 me-2 rounded" %>
               <button type="submit" style="background: none; border: none; color: #ffffff ">
@@ -26,20 +18,24 @@
           </li>
         <% end %>
         <% if user_signed_in? %>
-          <li class="nav-item me-3 me-lg-0">
-            <a class="nav-link dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
-                   alt="" loading="lazy"/>
-              <%= current_user.email %>
+          <% if user_signed_in? %>
+            <li class="nav-item me-3">
+              <%= link_to "Item list", items_path, class: "nav-link text-white" %>
+            </li>
+          <% end %>
+          <li class="nav-item dropdown d-flex align-items-center">
+            <% name = current_user.name ?  current_user.name : current_user.email.split('@')[0] + " (#{current_user.id})" %>
+            <img src="<%= current_user.avatar_link ? current_user.avatar_link : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png" %>" alt="avatar" class="header-avatar">
+            <a class="nav-link dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+              <%= name %>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="navbarDropdown1">
-              <li><a class="dropdown-item text-white" href="#">Action</a></li>
-              <li><a class="dropdown-item text-white" href="#">Another action</a></li>
+            <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown1">
+              <li><a class="dropdown-item text-white" href="<%= edit_user_registration_path %>">Trang cá nhân</a></li>
               <li>
                 <hr class="dropdown-divider color-white"/>
               </li>
               <li>
-                <%= button_to 'Sign Out',
+                <%= button_to 'Đăng xuất',
                               destroy_user_session_path,
                               method: :delete,
                               class: "dropdown-item text-white" %>
@@ -47,11 +43,12 @@
             </ul>
           </li>
         <% else %>
-          <li class="nav-item">
-            <%= link_to new_user_session_path, class: "nav-link text-white" do %>
-              <i class="fa fa-sign-in text-white"></i> Sign in
-            <% end %>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="<%= new_user_registration_path %>">
+            <i class="fa-solid fa-user"></i> Đăng ký
+          </a></li>
+          <li class="nav-item"><a class="nav-link" href="<%= new_user_session_path %>">
+            <i class="fa fa-sign-in"></i> Đăng nhập
+          </a></li>
         <% end %>
       </ul>
     </div>

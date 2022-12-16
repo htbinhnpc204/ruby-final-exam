@@ -3,12 +3,21 @@ class ItemsController < ApplicationController
   helper_method :sort_column, :sort_direction
   skip_before_action :verify_authenticity_token
 
+  ITEM_PER_PAGE = 3
+
   # GET /items or /items.json
   def index
+    @items = current_user.items
     if params[:query]
-      @items = Item.where('item_name LIKE ?', "%#{params[:query]}%")
-    else
-      @items = Item.order(sort_column + " " + sort_direction)
+      @query = params[:query]
+      @items = @items.where('item_name LIKE ?', "%#{@query}%")
+    end
+    @page = params.fetch(:page, 0).to_i
+    @total_pages = (@items.length * 1.0 / ITEM_PER_PAGE).ceil
+    @items = @items.offset(@page * ITEM_PER_PAGE).limit(ITEM_PER_PAGE)
+    respond_to do |format|
+      format.html
+      format.json { render json: @items }
     end
   end
 
@@ -28,6 +37,7 @@ class ItemsController < ApplicationController
   # POST /items or /items.json
   def create
     @item = Item.new(item_params)
+    @item.user_id = current_user.id
     @validated = validate_params
     logger.debug @validated
     respond_to do |format|
@@ -38,7 +48,7 @@ class ItemsController < ApplicationController
         end
       else
         flash[:error] = 'Null excepted'
-        format.html { redirect_to new_item_url}
+        format.html { redirect_to new_item_url }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
