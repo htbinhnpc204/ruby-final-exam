@@ -39,21 +39,7 @@
       <% end %>
       </tbody>
     </table>
-    <div class="col text-white float-end">
-      <% unless @page <= 0 %>
-        <a href="<%= items_path(page: @page - 1, query: @query) %>">
-          <i class="fa fa-arrow-left"></i> Previous
-        </a>
-      <% end %>
-      <%= if @page != 0 and @page != @total_pages -1
-            "|"
-      end%>
-      <% if @page < @total_pages - 1 %>
-        <a href="<%= items_path(page: @page + 1, query: @query) %>">
-          Next <i class="fa fa-arrow-right"></i>
-        </a>
-      <% end %>
-    </div>
+    <%= render 'paging' %>
     <p class="text-white">Trang hiện tại: <%= @page + 1 %>/<%= @total_pages %></p>
     <%= link_to new_item_path, class: "btn btn-info" do %>
       <i class="fa fa-plus"></i> New item
